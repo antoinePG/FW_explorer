@@ -6,6 +6,8 @@ import numpy as np
 import pandas as pd
 from datetime import datetime as dt
 from dateutil.relativedelta import relativedelta
+import base64
+
 
 
 def run_once(f):
@@ -516,90 +518,281 @@ def graph_tabs():
                                            )
                                        ]
                                    ),
-
                                dcc.Tab(
-                                   label='User Manual',
-                                   value = 'Manual',
+                                   label='User Guide',
+                                   value = 'User Guide',
                                    style={'backgroundColor': "inherit"}, 
                                    selected_style={'backgroundColor': "inherit",'color':'white'},
-                                   children = [
-                                       html.Div(
-                                           id="manual",
-                                           #style = {'display': 'inline-block'},
-                                           children = [
-                                               dcc.Markdown('''
-## User Manual
+                                   children = [ ###
+                                       dcc.Tabs(id="tabs_guide",
+                                         vertical=False,
+                                         value = 'tabsguide',
+                                         parent_style={'flex-direction': 'column',
+                                                       '-webkit-flex-direction': 'column',
+                                                       '-ms-flex-direction': 'column',
+                                                       'display': 'flex'},
+                                         colors={"border": "white",
+                                                 "primary": "white",
+                                                 "background": "grey"
+                                                 },
+                                         children=[
+                                             dcc.Tab(
+                                               label='Model controls',
+                                               #value = 'User Guide Tab 1',
+                                               style={'backgroundColor': "inherit"}, 
+                                               selected_style={'backgroundColor': "inherit",'color':'white'},
+                                               children = [
+                                                   dcc.Markdown('''
 
-### Model controls.
-#### Section 1. Basic settings
+### Model controls 
+#### Section 1. Basic settings - Left Panel
 
 This is the Exploration tool for the Franke-Westerhoff structural stochastic volatility model.
-Start working with the explorer by choosing appropriate **SEED**, or let the tool pick random
+Start working with the explorer by choosing an appropriate **SEED**, or let the tool pick a random
 value for you.
 
-7 models from the original paper are presented as presets. At the end of the first section,
-choose a model to simulate from the drop box. The models may be customized by user if needed.
+7 models from the original paper, as well as an extended model including a leveraged agent, 
+are presented as presets. Choose a model to simulate from the drop box. The models may be customized by 
+the user if needed. 
+
+                                                    '''),
+
+                                                html.Img(src=dash.Dash().get_asset_url('01_seed_model_show.png'), 
+                                                         style={'height':'25%', 'width':'25%'}),
+              
+              
+                                                   dcc.Markdown('''              
+#### Section 2. Model parameters - Left Panel
+
 All parameters are editable by clicking **SHOW / HIDE** button. Original values of the parameters
 are preserved while experimenting.
 
-#### Section 2. Model arguments
+                                                    '''),
 
+                                                html.Img(src=dash.Dash().get_asset_url('02_params_showhide.png'), 
+                                                         style={'height':'25%', 'width':'25%'}),                                                    
+
+
+                                                   dcc.Markdown(''' 
+\n              
 Use **Periods** and **Paths** input boxes to set length of simulation and number of individual
 trajectory paths accordingly.
 
 Market Liquidity and Switching Strength sliders set corresponding model parameters as appropriate.
 
+                                                    '''),
+
+                                                html.Img(src=dash.Dash().get_asset_url('03_Periods_paths_sliders.png'), 
+                                                         style={'height':'25%', 'width':'25%'}),
+                                                
+
+                                                   dcc.Markdown(''' 
+\n
 **Fundamental price window** and **Effective return window** are two extensions added to the model
 that allow to extend simulation flexibility.
 
 **Fundamental price window** is used to determine a time period for calculating the fundamental price.
-If disabled, the fundamental price is always **1**, while if the feature enabled, fundamental price
-is calculated as average price for last **N** periods, as set on slider control. This control affects
-the Fundamentalists behaviour. If at some specific simulation price deviates from **1** for a period of
+If disabled, the fundamental price is always **1**, while if the feature is enabled, the fundamental price
+is calculated as an average price for the last **N** periods, as set on slider control. This control affects
+the Fundamentalists behaviour. If at some specific simulation the price deviates from **1** for a period of
 time comparable to the window, the price effectively becomes a new fundamental value.
 
-**Effective return window** affects the behaviour of chartist part of simulation. If disabled, chartists's
-prediction on market is based on last return. If the feature enabled, few last returns average used
-to calculate the 'effective return'. This feature may be used to simulate 'weekly chartists', for example.
+**Effective return window** affects the behaviour of the chartists. If disabled, chartists's
+prediction on market is based on last return. If the feature is enabled, the average return of the last
+**N** periods is used used to calculate the 'effective return'. This feature may be used to simulate 
+'weekly chartists', for example.
 
-**Simulate** button starts the simulaton. No simulation traces will appear when simulation is complete.
-Use the following section controls to display results.
+                                                    '''),
+                                                    
+                                                    html.Img(src=dash.Dash().get_asset_url('04_price_windows.png'), 
+                                                         style={'height':'25%', 'width':'25%'}),
 
-**Pick Start** and **Start from picked point** are discussed in Model Display.
 
-#### Section 3. Display Results
+                                                   dcc.Markdown('''
+#### Section 3. Generate Model Simulations - Left Panel
 
-Displaying all simulated traces is computationally difficult problem and trashes output with numerous random
-lines. We structured output traces by properties, and marked them with individual colours. User can pick 
-traces with desired properties to display at will, together with the number of traces per option.
+\n
+**Simulate** button starts the simulaton. No simulation traces will appear when the simulation is complete.
+Refer to the **Display** tab of this guide for plotting outputs.
+\n
+**Pick Start** and **Start from picked point** are discussed in **Section 4. Display Model Simulations**.
 
+                                                    '''),
+
+                                                    html.Img(src=dash.Dash().get_asset_url('05_simulate.png'), 
+                                                         style={'height':'25%', 'width':'25%'}),
+
+                                                 
+                                                   ]
+                                               ),
+                                                                
+                                                                
+                 
+                                            # Display  Main                  
+                                            dcc.Tab(
+                                               label='Results - Main View',
+                                               style={'backgroundColor': "inherit"}, 
+                                               selected_style={'backgroundColor': "inherit",'color':'white'},
+                                               children = [
+                                                   dcc.Markdown('''
+### Display Model Simulations 
+                                                   
+#### Section 1. Select simulations - Left Panel
+
+\n
+Displaying all simulated traces is computationally expensive and can crash the output. 
+We structured the output traces by properties, and marked them with individual colours. 
+User can pick traces with the desired properties to display at will, together with the number of traces 
+per option.
+
+\n
 The supported properties are:
-* Random: pick random traces;
-* Most volatile: pick N most volatile traces;
-* Least volatile: pick N least volatile traces;
-* Max drawdown: pick traces demonstrating maximal loss in price.
+* Random: pick random traces
+* Most volatile: pick N most volatile traces
+* Least volatile: pick N least volatile traces
+* Max drawdown: pick traces demonstrating maximal loss in price at any point in time
 
-The model outputs is displayed at the right part of the screen. It is also interactive and is discussed at
-the section **Model Display**
+                                                    '''),
+                                                    
+                                                   html.Img(src=dash.Dash().get_asset_url('06_display_option.png'), 
+                                                         style={'height':'25%', 'width':'25%'}),
+              
+                                                   dcc.Markdown('''
+\n
+#### Section 2. Simulations display - Main View Tab
+The selected traces are displayed in the **Main View** tab. 
+
+The plot is interactive and the user can:
+* zoom in by selecting a zone in the graph area
+* zoom out by double clicking a zone in the graph area
+* select a trace by clicking on it on the graph and get detailed graphical results in **Detailed View** tab (1)
+* hide/show a simulation by clicking on its name in the legend (2)
+* show a unique/all simulation(s) on screen by **double** clicking on its name in the legend (2)
+* reset the display by clicking on the house icon in the Plotly toolbar (3)
 
 
-#### Section 3. Saving Results
+                                                    '''),
+                                                   html.Img(src=dash.Dash().get_asset_url('07_displaymain.png'), 
+                                                         style={'height':'90%', 'width':'90%'}),                                                    
+                                                 
+                                                   ]
+                                               ),
+                                                                
+                                                                
+                                                                
+                                            # Display  Swipe                  
+                                            dcc.Tab(
+                                               label='Results - Swipe',
+                                               style={'backgroundColor': "inherit"}, 
+                                               selected_style={'backgroundColor': "inherit",'color':'white'},
+                                               children = [
+                                                   dcc.Markdown('''
+### Display Parameter sensitivities
+     
+\n
+The user can run simulations for a specific range of a parameter, keeping all others variables intact.
+The result of these simulations is displayed as statistical plots defining the sensitivities of
+the model to that specific parameter accross that range.
 
-**Save/Load** buttons together with corresponding input and dropbox allow to save and restore the state
-of the dash at the server, and recover an interesting simulation later at convenience. 
+#### Section 1. Define Parameters - Left Panel
 
-### Model Display.
+\n
+The user can:
+* Choose an appropriate parameter (1) 
+* Define a value range and a step size (default: 50% to 150% with a 10% step size)
+* Select effect on returns or price (2)
+* Select the period accross which the parameter is swiped (default: 2 to 500)
+* Click swipe to get results (3) 
+* Selecting "hold" will allow the user to repeat the above while keeping actual results on the plots
 
-The program has interactive graphical representation of the model output. There are **Main Vieew** and 
-**Detailed View** tabs to explore the model.
 
-''')
-                                               ]
-                                           )
+                                                    '''),
+                                                    
+                                                   html.Img(src=dash.Dash().get_asset_url('10_controlswipe.png'), 
+                                                         style={'height':'25%', 'width':'25%'}),
+              
+                                                   dcc.Markdown('''
+\n
+#### Section 2. Swipe display - Sensitivity Tab
+The results are displayed in the **Sensitivity** tab. 
+The distribution for lowest, highest and current values of the parameter are displayed as well
+
+The plot is interactive and the user can:
+* zoom in by selecting a zone in the graph area
+* zoom out by double clicking a zone in the graph area
+* Observe the parameter's range is located on the x axis of the plots (1)
+* Hoover above traces will allow the user to know the values of the parameter (2)
+* Reset the display by clicking on the house icon in the Plotly toolbar (3)
+
+ 
+
+                                                    '''),
+                                                   html.Img(src=dash.Dash().get_asset_url('11_resultswipe.png'), 
+                                                         style={'height':'90%', 'width':'90%'}),                                                    
+                                                 
+                                                   ]
+                                               ),
+                                        
+                                                                
+                                                                
+                                                                
+                                                                
+                                            # Load / Save Tab                    
+                                            dcc.Tab(
+                                               label='Save Load',
+                                               style={'backgroundColor': "inherit"}, 
+                                               selected_style={'backgroundColor': "inherit",'color':'white'},
+                                               children = [
+                                                   dcc.Markdown('''
+### Save and Load Models - Save/Load Tab
+
+#### Section 1. Save Model
+
+                                                                '''),
+                                                   html.Img(src=dash.Dash().get_asset_url('08_Save.png'), 
+                                                         style={'height':'90%', 'width':'90%'}),
+                                                                
+                                                   dcc.Markdown('''                                                                
+\n
+You can save the current state of your model by following these steps:
+* Click on the Save/Load Tab
+* Under Save Model, choose an appropriate file name (1)
+* If you want, you can write a comment in the text area - this will be saved with the model
+* Click **SAVE** (2)
+* Your current model has been saved
+
+#### Section 2. Load Model
+
+
+                                                                '''),
+                                                                
+                                                   html.Img(src=dash.Dash().get_asset_url('09_Load.png'), 
+                                                         style={'height':'90%', 'width':'90%'}),
+
+
+
+                                                   dcc.Markdown('''
+
+You can load a previously saved model by following these steps:
+* Click on the Save/Load Tab
+* Under Load Model, select the model you wish to load (1)
+* If you wrote a comment for the selected model, it will appear in the comment section
+* Click **LOAD** (2)
+* Your model has been loaded
+ 
+                                                    '''),
+
+                                                   ]
+                                               )
+                                             ]
+                                         )
                                        ]
-                                   ),
+                                   ),                         
                                ],
                          ),
+                                                            
+                                                            
+                               
                            html.Div(
                                id = 'selected_curves',
                                children = [],
