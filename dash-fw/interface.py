@@ -558,7 +558,8 @@ the user if needed.
                                                     '''),
 
                                                 html.Img(src=dash.Dash().get_asset_url('01_seed_model_show.png'), 
-                                                         style={'height':'25%', 'width':'25%'}),
+                                                         style={'height':'auto', 'width':'auto',
+                                                                'max-width':'25%'}),
               
               
                                                    dcc.Markdown('''              
@@ -570,7 +571,8 @@ are preserved while experimenting.
                                                     '''),
 
                                                 html.Img(src=dash.Dash().get_asset_url('02_params_showhide.png'), 
-                                                         style={'height':'25%', 'width':'25%'}),                                                    
+                                                         style={'height':'auto', 'width':'auto',
+                                                                'max-width':'25%'}),                                                 
 
 
                                                    dcc.Markdown(''' 
@@ -583,7 +585,8 @@ Market Liquidity and Switching Strength sliders set corresponding model paramete
                                                     '''),
 
                                                 html.Img(src=dash.Dash().get_asset_url('03_Periods_paths_sliders.png'), 
-                                                         style={'height':'25%', 'width':'25%'}),
+                                                         style={'height':'auto', 'width':'auto',
+                                                                'max-width':'25%'}),
                                                 
 
                                                    dcc.Markdown(''' 
@@ -605,7 +608,8 @@ prediction on market is based on last return. If the feature is enabled, the ave
                                                     '''),
                                                     
                                                     html.Img(src=dash.Dash().get_asset_url('04_price_windows.png'), 
-                                                         style={'height':'25%', 'width':'25%'}),
+                                                         style={'height':'auto', 'width':'auto',
+                                                                'max-width':'25%'}),
 
 
                                                    dcc.Markdown('''
@@ -620,7 +624,8 @@ Refer to the **Display** tab of this guide for plotting outputs.
                                                     '''),
 
                                                     html.Img(src=dash.Dash().get_asset_url('05_simulate.png'), 
-                                                         style={'height':'25%', 'width':'25%'}),
+                                                         style={'height':'auto', 'width':'auto',
+                                                                'max-width':'25%'}),
 
                                                  
                                                    ]
@@ -655,7 +660,8 @@ The supported properties are:
                                                     '''),
                                                     
                                                    html.Img(src=dash.Dash().get_asset_url('06_display_option.png'), 
-                                                         style={'height':'25%', 'width':'25%'}),
+                                                         style={'height':'auto', 'width':'auto',
+                                                                'max-width':'25%'}),
               
                                                    dcc.Markdown('''
 \n
@@ -673,7 +679,8 @@ The plot is interactive and the user can:
 
                                                     '''),
                                                    html.Img(src=dash.Dash().get_asset_url('07_displaymain.png'), 
-                                                         style={'height':'90%', 'width':'90%'}),                                                    
+                                                         style={'height':'auto', 'width':'auto',
+                                                                'max-width':'90%'}),                                                    
                                                  
                                                    ]
                                                ),
@@ -709,7 +716,8 @@ The user can:
                                                     '''),
                                                     
                                                    html.Img(src=dash.Dash().get_asset_url('10_controlswipe.png'), 
-                                                         style={'height':'25%', 'width':'25%'}),
+                                                         style={'height':'auto', 'width':'auto',
+                                                                'max-width':'25%'}),
               
                                                    dcc.Markdown('''
 \n
@@ -723,12 +731,13 @@ The plot is interactive and the user can:
 * Observe the parameter's range is located on the x axis of the plots (1)
 * Hoover above traces will allow the user to know the values of the parameter (2)
 * Reset the display by clicking on the house icon in the Plotly toolbar (3)
-
+a
  
 
                                                     '''),
                                                    html.Img(src=dash.Dash().get_asset_url('11_resultswipe.png'), 
-                                                         style={'height':'90%', 'width':'90%'}),                                                    
+                                                         style={'height':'auto', 'width':'auto',
+                                                                'max-width':'90%'}),                                                   
                                                  
                                                    ]
                                                ),
@@ -750,7 +759,8 @@ The plot is interactive and the user can:
 
                                                                 '''),
                                                    html.Img(src=dash.Dash().get_asset_url('08_Save.png'), 
-                                                         style={'height':'90%', 'width':'90%'}),
+                                                         style={'height':'auto', 'width':'auto',
+                                                                'max-width':'90%'}),
                                                                 
                                                    dcc.Markdown('''                                                                
 \n
@@ -767,7 +777,8 @@ You can save the current state of your model by following these steps:
                                                                 '''),
                                                                 
                                                    html.Img(src=dash.Dash().get_asset_url('09_Load.png'), 
-                                                         style={'height':'90%', 'width':'90%'}),
+                                                         style={'height':'auto', 'width':'auto',
+                                                                'max-width':'90%'}),
 
 
 
