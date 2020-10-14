@@ -678,7 +678,7 @@ The plot is interactive and the user can:
 
 
                                                     '''),
-                                                   html.Img(src=dash.Dash().get_asset_url('07_displaymain.png'), 
+                                                   html.Img(src=dash.Dash().get_asset_url('07_DisplayMain.png'), 
                                                          style={'height':'auto', 'width':'auto',
                                                                 'max-width':'90%'}),                                                    
                                                  
